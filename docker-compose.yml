@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+
+  backend:
+    build: ./puzzle-book-backend
+    container_name: puzzle-backend
+
+    ports:
+      - "5000:5000"
+
+    env_file:
+      - ./puzzle-book-backend/.env
+
+    depends_on:
+      - redis
+
+    restart: always
+
+  frontend:
+    build: ./puzzle-book-react
+    container_name: puzzle-frontend
+
+    ports:
+      - "5173:5173"
+
+    depends_on:
+      - backend
+
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: puzzle-redis
+
+    ports:
+      - "6379:6379"
+
+    restart: always
